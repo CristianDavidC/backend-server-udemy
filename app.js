@@ -20,6 +20,12 @@ app.use(bodyParser.json())
 // Rutas: importar las rutas de los modulos
 var appRoutes = require('./routes/app');
 var usuarioRoutes = require('./routes/usuario');
+var hospitalRoutes = require('./routes/hospital');
+var medicoRoutes = require('./routes/medico');
+var busquedaRoutes = require('./routes/busqueda');
+var uploadRoutes = require('./routes/upload');
+var imagenesRoutes = require('./routes/imagenes');
+
 var loginRoutes = require('./routes/login');
 
 // Conexion a la bd
@@ -29,9 +35,22 @@ mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', (err, res) =
     console.log('Base de datos: \x1b[32m%s\x1b[0m','online');
 })
 
+// Server index config
+// var serveIndex = require('serve-index');
+// app.use(express.static(__dirname + '/'))
+// app.use('/uploads', serveIndex(__dirname + '/uploads'));
+
 // Rutas: uso - Middleware: algo que se ejecuta antes que se resuelvan otras rutas
 app.use('/usuario', usuarioRoutes);
+app.use('/hospital', hospitalRoutes);
+app.use('/medico', medicoRoutes);
+app.use('/busqueda', busquedaRoutes);
+app.use('/upload', uploadRoutes);
+app.use('/img', imagenesRoutes);
+
 app.use('/login', loginRoutes);
+
+
 app.use('/', appRoutes);
 
 // Escuchar peticiones

@@ -16,7 +16,12 @@ var Usuario = require('../models/usuario');
 // Metodo para traer todos los usuarios de la BD
 app.get('/', (req, res, next) => {
 
+    var desde = req.query.desde || 0; // Parametro opcional para paginar
+    desde = Number(desde);
+
     Usuario.find({ }, 'nombre email img role') // find: 3 args = metodo, campos que quiero mostrar y callback
+        .skip(desde)
+        .limit(5)
         .exec(
             (err, usuarios) => {
                 if (err) {
@@ -27,10 +32,13 @@ app.get('/', (req, res, next) => {
                     })
                 }
 
-                res.status(200).json({
+                Usuario.count({}, (err, conteo) => {
+                    res.status(200).json({
                         ok: false,
-                        usuarios: usuarios
+                        usuarios: usuarios,
+                        total: conteo
                     });
+                });
             })
     });
 
