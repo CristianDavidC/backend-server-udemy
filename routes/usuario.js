@@ -19,7 +19,7 @@ app.get('/', (req, res, next) => {
     var desde = req.query.desde || 0; // Parametro opcional para paginar
     desde = Number(desde);
 
-    Usuario.find({ }, 'nombre email img role') // find: 3 args = metodo, campos que quiero mostrar y callback
+    Usuario.find({ }, 'nombre email img role google') // find: 3 args = metodo, campos que quiero mostrar y callback
         .skip(desde)
         .limit(5)
         .exec(
@@ -34,7 +34,7 @@ app.get('/', (req, res, next) => {
 
                 Usuario.count({}, (err, conteo) => {
                     res.status(200).json({
-                        ok: false,
+                        ok: true,
                         usuarios: usuarios,
                         total: conteo
                     });
@@ -91,7 +91,7 @@ app.put('/:id', mdAutenticacion.verificarToken, (req, res) => { // Especificar o
 
 
 // Metodo para crear un nuevo usuario
-app.post('/', mdAutenticacion.verificarToken, (req, res) => {
+app.post('/', (req, res) => {
     var body = req.body;
 
     var usuario = new Usuario({
